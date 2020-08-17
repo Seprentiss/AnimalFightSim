@@ -1,55 +1,48 @@
 import pandas as pd
 import random
-
-class Tiger:
-    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed
+class Hippo:
+    global data, animal, health, speed, tusk, stomp, charge, attacks, ev, attPT, teethBonus, oppBleed
     data = pd.read_csv("animalfight.csv")
-    animal = "TIGER"
-    attacks = ["Bite","Claw"]
+    animal = "HIPPO"
+    attacks = ["Bite", "Charge"]
     speed = data.loc[2, animal]
-    bite = data.loc[12, animal]
-    punch = data.loc[13, animal]
-    health = data.loc[6,animal]
-    ev = data.loc[3, animal]
-    attPT = round(data.loc[14, animal])
-    clawBonus = punch * .2
+    health = data.loc[6, animal] / 3
+    ev = 0
+    attPT = 1
     oppBleed = False
+    charge = (speed * (data.loc[9, animal] /500))
+    bite = data.loc[12, animal]
+    teethBonus = bite * .25
 
     def __init__(self):
-        global health,speed,bite,punch,slam,attacks,attPT,oppBleed
+        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, charge
         self.health = health
         self.speed = speed
         self.attacks = attacks
-        self.bite = bite
-        self.punch = punch
+        self.charge = charge
         self.attPT = attPT
         self.oppBleed = oppBleed
 
-
-
     def RandAttack(self):
-        global attacks, clawBonus, bleeding
-        att = random.choices(attacks, weights=(40, 60), k=1)
+        global attacks,teethBonus,bleeding, attPow
+        att = random.choices(attacks, weights=(80,20), k=1)
         if att[0] == "Bite":
-            hit = random.choices(['T', 'F'], weights=((5), 95))
+            hit = random.choices(['T','F'], weights=(10,95),k=1)
             if hit[0] == "T":
                 attPow = 0
             else:
-                attPow = self.bite
-                rB = random.choices(['T', 'F'], weights=(50, 50))
+                attPow = self.bite + teethBonus
+                rB = random.choices(['T','F'], weights=(75,25),k=1)
                 if rB[0] == "T":
                     self.OppBleed()
-        if att[0] == "Claw":
-            hit = random.choices(['T', 'F'], weights=(5, 95))
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(40, 60))
             if hit[0] == "T":
                 attPow = 0
             else:
-                attPow = self.punch + clawBonus
-                rB = random.choices(['T', 'F'], weights=(65, 35))
-                if rB[0] == "T":
-                    self.OppBleed()
-
+                attPow = self.charge
         return attPow
+
     def StrikeEvaded(self):
         global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
@@ -69,6 +62,6 @@ class Tiger:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
-t = Tiger()
 
-print(t.punch)
+
+

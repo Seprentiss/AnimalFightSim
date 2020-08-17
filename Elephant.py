@@ -7,8 +7,8 @@ class Elephant:
     animal = "ELEPHANT"
     attacks = ["Tusk", "Stomp", "Ram"]
     speed = data.loc[2, animal]
-    health = data.loc[6, animal]
-    ev = 0
+    health = data.loc[6, animal] / 2
+    ev = 10
     attPT = 1
     oppBleed = False
     stomp = data.loc[13, animal]
@@ -53,7 +53,7 @@ class Elephant:
         return attPow
 
     def StrikeEvaded(self):
-        global ev, grizz_data, animal
+        global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
         hit = (100 - dodge)
 
@@ -74,7 +74,3 @@ class Elephant:
 
 
 
-e = Elephant()
-
-print(e.tusk, e.ram, e.stomp)
-print(e.RandAttack())

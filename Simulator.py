@@ -6,7 +6,9 @@ from Gorilla import Gorilla
 from Grizzly import Grizzly
 from Tiger import Tiger
 from Elephant import Elephant
-
+from Hippo import Hippo
+from Rhino import Rhino
+from Lion import Lion
 
 global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two
 data = pd.read_csv("animalfight.csv")
@@ -41,24 +43,43 @@ def AnimalOneSelection(animalOne):
     if animalOne == "Tiger":
         one = Tiger()
         return one
+    if animalOne == "Lion":
+        one = Lion
+        return one
     if animalOne == "Elephant":
         one = Elephant()
         return one
+    if animalOne == "Hippo":
+        one = Hippo()
+        return one
+    if animalOne == "Rhino":
+        one = Rhino()
+        return one
 
-def AnimalOneSelection(animalTwo):
+def AnimalTwoSelection(animalTwo):
     global two
     if animalTwo == "Gorilla":
-        one = Gorilla()
-        return one
+        two = Gorilla()
+        return two
     if animalTwo  == "Grizzly Bear":
-        one = Grizzly()
-        return one
+        two = Grizzly()
+        return two
     if animalTwo  == "Tiger":
-        one = Tiger()
-        return one
+        two = Tiger()
+        return two
+    if animalTwo == "Lion":
+        two = Lion()
+        return two
     if animalTwo  == "Elephant":
-        one = Elephant()
-        return one
+        two = Elephant()
+        return two
+    if animalTwo == "Hippo":
+        two = Hippo()
+        return two
+    if animalTwo == "Rhino":
+        two = Rhino()
+        return two
+
 
 def Next(current):
     global currentAnimal
@@ -77,7 +98,7 @@ def Sim(animalOne, animalTwo):
     for i in range(num_of_tests):
         end = False
         one = AnimalOneSelection(animalOne)
-        two = Gorilla()
+        two = AnimalTwoSelection(animalTwo)
 
         oneHealth = one.health
         twoHealth = two.health
@@ -150,6 +171,23 @@ def Start():
     global animals
     combatants = animals
     print(*combatants, sep="\n")
-    anOne = input("Please Select Your First Combatant")
+    anOne = input("Please Select Your First Combatant: ")
 
-Start()
+    if anOne in combatants:
+        index = anOne
+        combatants.remove(index)
+        print(*combatants, sep="\n")
+        anTwo = input("Please Select Your Second Combatant: ")
+        if anTwo in combatants:
+            index = anTwo
+            combatants.remove(index)
+            Sim(anOne,anTwo)
+        else:
+            print("n/a")
+            SystemExit
+    else:
+        print("n/a")
+        SystemExit
+
+
+Sim("Rhino", "Lion")
