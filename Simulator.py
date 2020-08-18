@@ -9,10 +9,12 @@ from Elephant import Elephant
 from Hippo import Hippo
 from Rhino import Rhino
 from Lion import Lion
+from PolarBear import PolarBear
+from tqdm import trange
+import time
 
 global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two
 data = pd.read_csv("animalfight.csv")
-
 
 animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger", "Moose", "Crocodile"]
 
@@ -32,6 +34,7 @@ twoBleeding = False
 one = ""
 two = ""
 
+
 def AnimalOneSelection(animalOne):
     global one
     if animalOne == "Gorilla":
@@ -40,11 +43,14 @@ def AnimalOneSelection(animalOne):
     if animalOne == "Grizzly Bear":
         one = Grizzly()
         return one
+    if animalOne == "Polar Bear":
+        one = PolarBear()
+        return one
     if animalOne == "Tiger":
         one = Tiger()
         return one
     if animalOne == "Lion":
-        one = Lion
+        one = Lion()
         return one
     if animalOne == "Elephant":
         one = Elephant()
@@ -56,21 +62,25 @@ def AnimalOneSelection(animalOne):
         one = Rhino()
         return one
 
+
 def AnimalTwoSelection(animalTwo):
     global two
     if animalTwo == "Gorilla":
         two = Gorilla()
         return two
-    if animalTwo  == "Grizzly Bear":
+    if animalTwo == "Grizzly Bear":
         two = Grizzly()
         return two
-    if animalTwo  == "Tiger":
+    if animalTwo == "Polar Bear":
+        two = PolarBear()
+        return two
+    if animalTwo == "Tiger":
         two = Tiger()
         return two
     if animalTwo == "Lion":
         two = Lion()
         return two
-    if animalTwo  == "Elephant":
+    if animalTwo == "Elephant":
         two = Elephant()
         return two
     if animalTwo == "Hippo":
@@ -89,13 +99,18 @@ def Next(current):
         currentAnimal = 1
 
 
-
-
-
 def Sim(animalOne, animalTwo):
-    global biteRow, hitRow, currentAnimal, end, oneCount, twoCount,attacksPerTurn
+    global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn
     num_of_tests = 1000
-    for i in range(num_of_tests):
+    print("Simulating Match-up...\n")
+    time.sleep(.5)
+    for n in trange(num_of_tests):
+        if n == num_of_tests * .25:
+            print("\nLoading Stats... ")
+        if n == num_of_tests / 2:
+            print("\nPreparing Battle Field")
+        if n == num_of_tests * .75:
+            print("\nCalculating Results...")
         end = False
         one = AnimalOneSelection(animalOne)
         two = AnimalTwoSelection(animalTwo)
@@ -104,7 +119,6 @@ def Sim(animalOne, animalTwo):
         twoHealth = two.health
 
         currentAnimal = random.randrange(1, 3)
-
 
         while ((one.health > 0 or two.health > 0) and end is False):
 
@@ -122,7 +136,7 @@ def Sim(animalOne, animalTwo):
                     twoCount += 1
                     end = True
                     break
-                for a in range(attacksPerTurn):
+                for a in range(int(attacksPerTurn)):
                     attackUsed = two.RandAttack()
                     if one.StrikeEvaded()[0] == "Dodge":
                         oneHealth = oneHealth
@@ -149,7 +163,7 @@ def Sim(animalOne, animalTwo):
                     oneCount += 1
                     end = True
                     break
-                for b in range(attacksPerTurn):
+                for b in range(int(attacksPerTurn)):
                     attackUsed = one.RandAttack()
                     if two.StrikeEvaded()[0] == "Dodge":
                         twoHealth = twoHealth
@@ -164,30 +178,42 @@ def Sim(animalOne, animalTwo):
                 else:
                     Next(currentAnimal)
 
+    if oneCount > twoCount:
+        winP = int(oneCount / (num_of_tests / 100))
+        print("The " + animalOne + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
+    if twoCount > oneCount:
+        winP = int(twoCount / (num_of_tests / 100))
+        print("The " + animalTwo + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
 
-    print("Wins for " + animalOne + " " + str(oneCount))
-    print("Wins for " + animalTwo + " " + str(twoCount))
+
 def Start():
     global animals
     combatants = animals
-    print(*combatants, sep="\n")
-    anOne = input("Please Select Your First Combatant: ")
+    e = False
+    e2 = False
 
-    if anOne in combatants:
-        index = anOne
-        combatants.remove(index)
+    while not e:
         print(*combatants, sep="\n")
-        anTwo = input("Please Select Your Second Combatant: ")
-        if anTwo in combatants:
-            index = anTwo
+        anOne = input("Please Select Your First Combatant: ")
+        if anOne in combatants:
+            index = anOne
             combatants.remove(index)
-            Sim(anOne,anTwo)
+            e = True
+            while not e2:
+                print(*combatants, sep="\n")
+                anTwo = input("Please Select Your Second Combatant: ")
+                if anTwo in combatants:
+                    index = anTwo
+                    combatants.remove(index)
+                    e2 = True
+                    time.sleep(.8)
+                    Sim(anOne, anTwo)
+                else:
+                    print("\nAnimal Not Found\nTry Again\n")
+                    SystemExit
         else:
-            print("n/a")
+            print("Try again")
             SystemExit
-    else:
-        print("n/a")
-        SystemExit
 
 
-Sim("Rhino", "Lion")
+Start()

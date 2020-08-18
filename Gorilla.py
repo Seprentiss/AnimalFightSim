@@ -77,12 +77,3 @@ class Gorilla:
 g = Gorilla()
 g.Bleeding()
 
-
-
-
-
-
-
-
-
-

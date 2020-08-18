@@ -69,6 +69,3 @@ class Tiger:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
-t = Tiger()
-
-print(t.punch)

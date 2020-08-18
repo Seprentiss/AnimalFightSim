@@ -6,12 +6,12 @@ class Rhino:
     animal = "RHINO"
     attacks = ["Horn", "Charge"]
     speed = data.loc[2, animal]
-    health = data.loc[6, animal] / 3.15
+    health = data.loc[6, animal] / 3
     ev = 10
     attPT = 1
     oppBleed = False
     charge = speed * (data.loc[9, animal] /500)
-    horn = charge/2
+    horn = charge/1.9
 
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge
@@ -25,14 +25,14 @@ class Rhino:
 
     def RandAttack(self):
         global attacks,teethBonus,bleeding, attPow,horn,charge
-        att = random.choices(attacks, weights=(90,10), k=1)
+        att = random.choices(attacks, weights=(85,15), k=1)
         if att[0] == "Horn":
             hit = random.choices(['T','F'], weights=(5,95),k=1)
             if hit[0] == "T":
                 attPow = 0
             else:
                 attPow = self.horn
-                rB = random.choices(['T','F'], weights=(50,50),k=1)
+                rB = random.choices(['T','F'], weights=(70,30),k=1)
                 if rB[0] == "T":
                     self.OppBleed()
         if att[0] == "Charge":

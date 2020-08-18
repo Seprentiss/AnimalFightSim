@@ -6,7 +6,7 @@ class Hippo:
     animal = "HIPPO"
     attacks = ["Bite", "Charge"]
     speed = data.loc[2, animal]
-    health = data.loc[6, animal] / 3
+    health = data.loc[6, animal] / 2.875
     ev = 0
     attPT = 1
     oppBleed = False
@@ -25,9 +25,9 @@ class Hippo:
 
     def RandAttack(self):
         global attacks,teethBonus,bleeding, attPow
-        att = random.choices(attacks, weights=(80,20), k=1)
+        att = random.choices(attacks, weights=(85,15), k=1)
         if att[0] == "Bite":
-            hit = random.choices(['T','F'], weights=(10,95),k=1)
+            hit = random.choices(['T','F'], weights=(3,97),k=1)
             if hit[0] == "T":
                 attPow = 0
             else:
@@ -36,7 +36,7 @@ class Hippo:
                 if rB[0] == "T":
                     self.OppBleed()
         if att[0] == "Charge":
-            hit = random.choices(['T', 'F'], weights=(40, 60))
+            hit = random.choices(['T', 'F'], weights=(35, 65))
             if hit[0] == "T":
                 attPow = 0
             else:
@@ -62,6 +62,3 @@ class Hippo:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
-
-
-
