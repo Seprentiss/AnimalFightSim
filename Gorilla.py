@@ -74,6 +74,3 @@ class Gorilla:
         self.oppBleed = oppBleed
         return oppBleed
 
-g = Gorilla()
-g.Bleeding()
-

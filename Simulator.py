@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-import seaborn as sns
 import random
 from Gorilla import Gorilla
 from Grizzly import Grizzly
@@ -10,13 +8,15 @@ from Hippo import Hippo
 from Rhino import Rhino
 from Lion import Lion
 from PolarBear import PolarBear
+from Bull import Bull
+from Bison import Bison
 from tqdm import trange
 import time
 
 global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two
 data = pd.read_csv("animalfight.csv")
 
-animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger", "Moose", "Crocodile"]
+animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger","Bull","Bison"]
 
 attacks = ["Bite", "Hit", "Slam"]
 
@@ -61,6 +61,12 @@ def AnimalOneSelection(animalOne):
     if animalOne == "Rhino":
         one = Rhino()
         return one
+    if animalOne == "Bull":
+        one = Bull()
+        return one
+    if animalOne == "Bison":
+        one = Bison()
+        return one
 
 
 def AnimalTwoSelection(animalTwo):
@@ -89,6 +95,12 @@ def AnimalTwoSelection(animalTwo):
     if animalTwo == "Rhino":
         two = Rhino()
         return two
+    if animalTwo == "Bull":
+        two = Bull()
+        return two
+    if animalTwo == "Bison":
+        two = Bison()
+        return two
 
 
 def Next(current):
@@ -101,7 +113,7 @@ def Next(current):
 
 def Sim(animalOne, animalTwo):
     global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn
-    num_of_tests = 1000
+    num_of_tests = 10000
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -179,18 +191,22 @@ def Sim(animalOne, animalTwo):
                     Next(currentAnimal)
 
     if oneCount > twoCount:
-        winP = int(oneCount / (num_of_tests / 100))
+        winP = float(oneCount / (num_of_tests / 100))
         print("The " + animalOne + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
     if twoCount > oneCount:
-        winP = int(twoCount / (num_of_tests / 100))
+        winP = float(twoCount / (num_of_tests / 100))
         print("The " + animalTwo + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
-
 
 def Start():
     global animals
     combatants = animals
     e = False
     e2 = False
+
+    print("=====================\n"
+          "Welcome to the Animal Fight Simulator\n"
+          "The Purpose of this program is to settle the debate of what animal would win in a fight\n"
+          "=====================")
 
     while not e:
         print(*combatants, sep="\n")
@@ -210,10 +226,8 @@ def Start():
                     Sim(anOne, anTwo)
                 else:
                     print("\nAnimal Not Found\nTry Again\n")
-                    SystemExit
         else:
             print("Try again")
-            SystemExit
 
 
 Start()

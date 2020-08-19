@@ -1,18 +1,18 @@
 import pandas as pd
 import random
-class Rhino:
+class Bison:
     global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge
     data = pd.read_csv("animalfight.csv")
-    animal = "RHINO"
+    animal = "BISON"
     attacks = ["Horn", "Charge"]
     speed = data.loc[2, animal]
-    health = data.loc[6, animal] / 1.95
-    ev = 10
+    health = data.loc[6, animal]
+    ev = 45
     attPT = 1
     oppBleed = False
-    charge = speed * (data.loc[9, animal] /500)
+    charge = speed * (data.loc[9, animal] /500) * 2.25
     print(charge)
-    horn = charge/1.45
+    horn = charge/1.55
     print(horn)
 
     def __init__(self):
@@ -34,7 +34,7 @@ class Rhino:
                 attPow = 0
             else:
                 attPow = self.horn
-                rB = random.choices(['T','F'], weights=(70,30),k=1)
+                rB = random.choices(['T','F'], weights=(60,40),k=1)
                 if rB[0] == "T":
                     self.OppBleed()
         if att[0] == "Charge":

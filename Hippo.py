@@ -6,13 +6,13 @@ class Hippo:
     animal = "HIPPO"
     attacks = ["Bite", "Charge"]
     speed = data.loc[2, animal]
-    health = data.loc[6, animal] / 2.875
-    ev = 0
+    health = data.loc[6, animal] / 1.95
+    ev = 10
     attPT = 1
     oppBleed = False
     charge = (speed * (data.loc[9, animal] /500))
     bite = data.loc[12, animal]
-    teethBonus = bite * .25
+    teethBonus = bite * .3
 
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, charge
@@ -27,7 +27,7 @@ class Hippo:
         global attacks,teethBonus,bleeding, attPow
         att = random.choices(attacks, weights=(85,15), k=1)
         if att[0] == "Bite":
-            hit = random.choices(['T','F'], weights=(3,97),k=1)
+            hit = random.choices(['T','F'], weights=(10,90),k=1)
             if hit[0] == "T":
                 attPow = 0
             else:

@@ -13,7 +13,7 @@ class PolarBear:
     health = data.loc[6,animal]
     ev = data.loc[3, animal]
     attPT = 1
-    clawBonus = punch * .05
+    clawBonus = punch * .1
     oppBleed = False
 
     def __init__(self):
@@ -32,7 +32,7 @@ class PolarBear:
 
     def RandAttack(self):
         global attacks,clawBonus,bleeding
-        att = random.choices(attacks, weights=(55, 30, 15), k=1)
+        att = random.choices(attacks, weights=(55, 25, 25), k=1)
         if att[0] == "Bite":
             hit = random.choices(['T','F'], weights=(7,93))
             if hit[0] == "T":
