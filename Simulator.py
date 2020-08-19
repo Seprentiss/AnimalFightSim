@@ -1,4 +1,4 @@
-import pandas as pd
+
 import random
 from Gorilla import Gorilla
 from Grizzly import Grizzly
@@ -14,7 +14,7 @@ from tqdm import trange
 import time
 
 global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two
-data = pd.read_csv("animalfight.csv")
+
 
 animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger","Bull","Bison"]
 
@@ -113,7 +113,7 @@ def Next(current):
 
 def Sim(animalOne, animalTwo):
     global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn
-    num_of_tests = 10000
+    num_of_tests = 1000
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -126,6 +126,7 @@ def Sim(animalOne, animalTwo):
         end = False
         one = AnimalOneSelection(animalOne)
         two = AnimalTwoSelection(animalTwo)
+
 
         oneHealth = one.health
         twoHealth = two.health

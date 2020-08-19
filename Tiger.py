@@ -12,7 +12,7 @@ class Tiger:
     health = data.loc[6,animal]
     ev = data.loc[3, animal]
     attPT = round(data.loc[14, animal])
-    clawBonus = punch * .2
+    clawBonus = punch * .18
     oppBleed = False
 
     def __init__(self):

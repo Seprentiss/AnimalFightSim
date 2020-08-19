@@ -11,10 +11,7 @@ class Bison:
     attPT = 1
     oppBleed = False
     charge = speed * (data.loc[9, animal] /500) * 2.25
-    print(charge)
-    horn = charge/1.55
-    print(horn)
-
+    horn = charge/1.65
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge
         self.health = health

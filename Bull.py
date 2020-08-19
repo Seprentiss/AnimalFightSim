@@ -13,7 +13,7 @@ class Bull:
     kick = (data.loc[0, animal] / 2.5) + data.loc[9,animal]
     charge = speed * (data.loc[9, animal] /500) * 3
     print(charge)
-    horn = charge / 1.85
+    horn = charge / 1.80
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge, kick
         self.health = health
