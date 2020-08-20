@@ -13,7 +13,7 @@ from Bison import Bison
 from tqdm import trange
 import time
 
-global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two
+global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two, num_of_tests
 
 
 animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger","Bull","Bison"]
@@ -33,6 +33,8 @@ oneBleeding = False
 twoBleeding = False
 one = ""
 two = ""
+
+num_of_tests = 1000
 
 
 def AnimalOneSelection(animalOne):
@@ -111,9 +113,8 @@ def Next(current):
         currentAnimal = 1
 
 
-def Sim(animalOne, animalTwo):
-    global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn
-    num_of_tests = 1000
+def PlainsSim(animalOne, animalTwo):
+    global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn,num_of_tests
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -126,6 +127,7 @@ def Sim(animalOne, animalTwo):
         end = False
         one = AnimalOneSelection(animalOne)
         two = AnimalTwoSelection(animalTwo)
+
 
 
         oneHealth = one.health
@@ -150,7 +152,7 @@ def Sim(animalOne, animalTwo):
                     end = True
                     break
                 for a in range(int(attacksPerTurn)):
-                    attackUsed = two.RandAttack()
+                    attackUsed = two.PlainsRandAttack()
                     if one.StrikeEvaded()[0] == "Dodge":
                         oneHealth = oneHealth
                     else:
@@ -177,11 +179,107 @@ def Sim(animalOne, animalTwo):
                     end = True
                     break
                 for b in range(int(attacksPerTurn)):
-                    attackUsed = one.RandAttack()
+                    attackUsed = one.PlainsRandAttack()
                     if two.StrikeEvaded()[0] == "Dodge":
                         twoHealth = twoHealth
                     else:
                         twoHealth -= attackUsed
+
+                    if twoHealth < 0:
+                        oneCount += 1
+                        attacksPerTurn = 0
+                        end = True
+                        break
+                else:
+                    Next(currentAnimal)
+
+    if oneCount > twoCount:
+        winP = float(oneCount / (num_of_tests / 100))
+        print("The " + animalOne + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
+    if twoCount > oneCount:
+        winP = float(twoCount / (num_of_tests / 100))
+        print("The " + animalTwo + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
+
+def JungleSim(animalOne, animalTwo):
+    global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, num_of_tests
+    print("Simulating Match-up...\n")
+    time.sleep(.5)
+    for n in trange(num_of_tests):
+        if n == num_of_tests * .25:
+            print("\nLoading Stats... ")
+        if n == num_of_tests / 2:
+            print("\nPreparing Battle Field")
+        if n == num_of_tests * .75:
+            print("\nCalculating Results...")
+        end = False
+        one = AnimalOneSelection(animalOne)
+        two = AnimalTwoSelection(animalTwo)
+
+        one.JungleStatAdj()
+        two.JungleStatAdj()
+
+
+        oneHealth = one.health
+        twoHealth = two.health
+
+        currentAnimal = random.randrange(1, 3)
+
+        while ((one.health > 0 or two.health > 0) and end is False):
+
+            if currentAnimal == 2:
+                attacksPerTurn = two.attPT
+                two.ClimbTree()
+                if one.oppBleed:
+                    twoHealth -= two.Bleeding()
+                if twoHealth < 0:
+                    oneCount += 1
+                    end = True
+                    break
+                if two.oppBleed:
+                    oneHealth -= one.Bleeding()
+                if oneHealth < 0:
+                    twoCount += 1
+                    end = True
+                    break
+                for a in range(int(attacksPerTurn)):
+                    attackUsed = two.JungleRandAttack()
+                    if one.StrikeEvaded()[0] == "Dodge":
+                        oneHealth = oneHealth
+                    else:
+                        oneHealth -= attackUsed
+                        if one.oppInTree is False:
+                            two.inTree = False
+                    if oneHealth < 0:
+                        twoCount += 1
+                        attacksPerTurn = 0
+                        end = True
+                        break
+                else:
+                    Next(currentAnimal)
+            else:
+                attacksPerTurn = one.attPT
+                one.ClimbTree()
+                if two.oppBleed:
+                    oneHealth -= one.Bleeding()
+                if oneHealth < 0:
+                    twoCount += 1
+                    end = True
+                    break
+                if one.oppBleed:
+                    twoHealth -= two.Bleeding()
+                if twoHealth < 0:
+                    oneCount += 1
+                    end = True
+                    break
+                for b in range(int(attacksPerTurn)):
+                    attackUsed = one.JungleRandAttack()
+                    if two.StrikeEvaded()[0] == "Dodge":
+                        twoHealth = twoHealth
+                    else:
+                        twoHealth -= attackUsed
+                        if two.oppInTree is False:
+                            one.inTree = False
+
 
                     if twoHealth < 0:
                         oneCount += 1
@@ -224,7 +322,7 @@ def Start():
                     combatants.remove(index)
                     e2 = True
                     time.sleep(.8)
-                    Sim(anOne, anTwo)
+                    JungleSim(anOne, anTwo)
                 else:
                     print("\nAnimal Not Found\nTry Again\n")
         else:
