@@ -18,8 +18,6 @@ global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, one
 
 animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger","Bull","Bison"]
 
-attacks = ["Bite", "Hit", "Slam"]
-
 end = False;
 
 currentAnimal = 0
@@ -321,7 +319,7 @@ def Start():
                     index = anTwo
                     combatants.remove(index)
                     e2 = True
-                    time.sleep(.8)
+                    time.sleep(.7)
                     JungleSim(anOne, anTwo)
                 else:
                     print("\nAnimal Not Found\nTry Again\n")

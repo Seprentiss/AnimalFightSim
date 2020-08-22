@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 
+
 class Grizzly:
     global grizz_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, clawBonus, oppBleed, inTree, oppInTree, attPow
     grizz_data = pd.read_csv("animalfight.csv")
@@ -18,7 +19,6 @@ class Grizzly:
     inTree = False
     oppInTree = False
     attPow = 0
-
 
     def __init__(self):
         global health, speed, bite, punch, slam, attacks, attPT, oppBleed, inTree, opInTree
@@ -38,7 +38,7 @@ class Grizzly:
         global inTree, attPt
         self.attPT = round(grizz_data.loc[14, animal])
         if self.inTree is False and oppInTree is False:
-            treeClimbed = random.choices(["Yes", "No"], weights=(5, 95))
+            treeClimbed = random.choices(["Yes", "No"], weights=(10, 90))
             if treeClimbed[0] == "Yes":
                 self.inTree = True
                 self.attPT -= 1
@@ -46,7 +46,7 @@ class Grizzly:
             else:
                 return self.inTree
         if self.inTree is False and oppInTree is True:
-            treeClimbed = random.choices(["Yes", "No"], weights=(70, 30))
+            treeClimbed = random.choices(["Yes", "No"], weights=(30, 70))
             if treeClimbed[0] == "Yes":
                 self.inTree = True
                 self.attPT -= 1
@@ -62,19 +62,16 @@ class Grizzly:
             else:
                 return self.inTree
 
-
-
-
     def PlainsRandAttack(self):
-        global attacks,clawBonus,bleeding
+        global attacks, clawBonus, bleeding
         att = random.choices(attacks, weights=(60, 35, 5), k=1)
         if att[0] == "Bite":
-            hit = random.choices(['T','F'], weights=(5,100))
+            hit = random.choices(['T', 'F'], weights=(5, 100))
             if hit[0] == "T":
                 attPow = 0
             else:
                 attPow = self.bite
-                rB = random.choices(['T','F'], weights=(40,60))
+                rB = random.choices(['T', 'F'], weights=(40, 60))
                 if rB[0] == "T":
                     self.OppBleed()
         if att[0] == "Claw":
@@ -93,8 +90,9 @@ class Grizzly:
             else:
                 attPow = self.slam
         return attPow
+
     def JungleRandAttack(self):
-        global attacks, bleeding,inTree,oppInTree, attPow
+        global attacks, bleeding, inTree, oppInTree, attPow
         if self.inTree is True and oppInTree is False:
             hit = random.choices(['T', 'F'], weights=(30, 70))
             if hit[0] == "T":
@@ -103,10 +101,10 @@ class Grizzly:
                 attPow = 0
             return attPow
         if self.inTree is True and oppInTree is True:
-            self.attacks = ["Bite", "Slap","Tree Throw"]
+            self.attacks = ["Bite", "Slap", "Tree Throw"]
             att = random.choices(attacks, weights=(55, 15, 30), k=1)
             if att[0] == "Bite":
-                hit = random.choices(['T', 'F'], weights=(4, 96))
+                hit = random.choices(['T', 'F'], weights=(30,70))
                 if hit[0] == "T":
                     attPow = 0
                 else:
@@ -115,13 +113,13 @@ class Grizzly:
                     if rB[0] == "T":
                         self.OppBleed()
             if att[0] == "Slap":
-                hit = random.choices(['T', 'F'], weights=(3, 97))
+                hit = random.choices(['T', 'F'], weights=(40, 60))
                 if hit[0] == "T":
                     attPow = 0
                 else:
                     attPow = self.punch
             if att[0] == "Tree Throw":
-                hit = random.choices(['T', 'F'], weights=(15, 85))
+                hit = random.choices(['T', 'F'], weights=(80, 20))
                 if hit[0] == "T":
                     attPow = 0
                 else:
@@ -129,12 +127,10 @@ class Grizzly:
                     oppInTree = False
             return attPow
 
-
-
-        if self.inTree is False:
+        if self.inTree is False and oppInTree is True:
             att = random.choices(attacks, weights=(65, 25, 10), k=1)
             if att[0] == "Bite":
-                hit = random.choices(['T', 'F'], weights=(4, 96))
+                hit = random.choices(['T', 'F'], weights=(100, 0))
                 if hit[0] == "T":
                     attPow = 0
                 else:
@@ -143,13 +139,40 @@ class Grizzly:
                     if rB[0] == "T":
                         self.OppBleed()
             if att[0] == "Slap":
-                hit = random.choices(['T', 'F'], weights=(3, 97))
+                hit = random.choices(['T', 'F'], weights=(100, 0))
                 if hit[0] == "T":
                     attPow = 0
                 else:
                     attPow = self.punch
             if att[0] == "Slam":
-                hit = random.choices(['T', 'F'], weights=(3, 98))
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.slam
+            return attPow
+        else:
+            att = random.choices(attacks, weights=(60, 35, 5), k=1)
+            if att[0] == "Bite":
+                hit = random.choices(['T', 'F'], weights=(5, 100))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.bite
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Claw":
+                hit = random.choices(['T', 'F'], weights=(10, 90))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.punch + clawBonus
+                    rB = random.choices(['T', 'F'], weights=(50, 50))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Slam":
+                hit = random.choices(['T', 'F'], weights=(10, 95))
                 if hit[0] == "T":
                     attPow = 0
                 else:
@@ -164,11 +187,11 @@ class Grizzly:
         op = ["Dodge", "Hit"]
         dodged = random.choices(op, weights=(dodge, hit), k=1)
         return dodged
+
     def Bleeding(self):
-        global bleeding, grizz_data,animal
+        global bleeding, grizz_data, animal
         dmg = grizz_data.loc[15, animal]
         return dmg
-
 
     def OppBleed(self):
         global oppBleed
@@ -188,7 +211,6 @@ class Grizzly:
     def JungleStatAdj(self):
         global attacks
         self.attacks = ["Bite, Punch", "Slam", "Tree Toss"]
-        self.ev = self.ev - 10
+        self.ev = self.ev - 25
 
-g = Grizzly()
-print(g.inTree)
+

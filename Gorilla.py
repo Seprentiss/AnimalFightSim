@@ -3,7 +3,7 @@ import random
 
 
 class Gorilla:
-    global g_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, bleeding, oppBleed, inTree, oppInTree
+    global g_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, bleeding, oppBleed, inTree, oppInTree,attPow
     g_data = pd.read_csv("animalfight.csv")
     animal = "GORILLA"
     attacks = ["Bite", "Slap", "Slam"]
@@ -14,6 +14,7 @@ class Gorilla:
     health = g_data.loc[6, animal]
     ev = g_data.loc[3, animal]
     attPT = round(g_data.loc[14, animal])
+    attPow = 0
     oppBleed = False
     inTree = False
     oppInTree = False
@@ -90,7 +91,7 @@ class Gorilla:
         return attPow
 
     def JungleRandAttack(self):
-        global attacks, bleeding, inTree,oppInTree
+        global attacks, bleeding, inTree,oppInTree,attPow
         if self.inTree is True and self.oppInTree is False:
             self.attacks = ["Tree Slam"]
             hit = random.choices(['T', 'F'], weights=(30, 70))
@@ -104,7 +105,7 @@ class Gorilla:
         if self.inTree is True and self.oppInTree is True:
             att = random.choices(attacks, weights=(65, 25, 10), k=1)
             if att[0] == "Bite":
-                hit = random.choices(['T', 'F'], weights=(4, 96))
+                hit = random.choices(['T', 'F'], weights=(10, 90))
                 if hit[0] == "T":
                     attPow = 0
                 else:
@@ -113,13 +114,13 @@ class Gorilla:
                     if rB[0] == "T":
                         self.OppBleed()
             if att[0] == "Slap":
-                hit = random.choices(['T', 'F'], weights=(3, 97))
+                hit = random.choices(['T', 'F'], weights=(10, 90))
                 if hit[0] == "T":
                     attPow = 0
                 else:
                     attPow = self.punch
             if att[0] == "Slam":
-                hit = random.choices(['T', 'F'], weights=(3, 98))
+                hit = random.choices(['T', 'F'], weights=(20, 80))
                 if hit[0] == "T":
                     attPow = 0
                 else:
@@ -128,7 +129,31 @@ class Gorilla:
 
 
 
-        if self.inTree is False:
+        if self.inTree is False and self.oppInTree is True:
+            att = random.choices(attacks, weights=(65, 25, 10), k=1)
+            if att[0] == "Bite":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.bite
+                    rB = random.choices(['T', 'F'], weights=(0, 100))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Slap":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.punch
+            if att[0] == "Slam":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.slam
+            return attPow
+        else:
             att = random.choices(attacks, weights=(65, 25, 10), k=1)
             if att[0] == "Bite":
                 hit = random.choices(['T', 'F'], weights=(4, 96))
@@ -146,7 +171,7 @@ class Gorilla:
                 else:
                     attPow = self.punch
             if att[0] == "Slam":
-                hit = random.choices(['T', 'F'], weights=(3, 98))
+                hit = random.choices(['T', 'F'], weights=(3, 97))
                 if hit[0] == "T":
                     attPow = 0
                 else:

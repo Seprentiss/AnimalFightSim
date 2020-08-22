@@ -8,10 +8,10 @@ class Bison:
     speed = data.loc[2, animal]
     health = data.loc[6, animal]
     ev = 45
-    attPT = 1
+    attPT = 2
     oppBleed = False
     charge = speed * (data.loc[9, animal] /500) * 2.25
-    horn = charge/1.65
+    horn = charge/1.55
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge
         self.health = health
@@ -22,7 +22,7 @@ class Bison:
         self.attPT = attPT
         self.oppBleed = oppBleed
 
-    def RandAttack(self):
+    def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow,horn,charge
         att = random.choices(attacks, weights=(85,15), k=1)
         if att[0] == "Horn":

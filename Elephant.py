@@ -26,7 +26,7 @@ class Elephant:
         self.attPT = attPT
         self.oppBleed = oppBleed
 
-    def RandAttack(self):
+    def PlainsRandAttack(self):
         global attacks,clawBonus,bleeding, attPow
         att = random.choices(attacks, weights=(70, 5, 25), k=1)
         if att[0] == "Tusk":

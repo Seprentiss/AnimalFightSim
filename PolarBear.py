@@ -30,7 +30,7 @@ class PolarBear:
 
 
 
-    def RandAttack(self):
+    def PlainsRandAttack(self):
         global attacks,clawBonus,bleeding
         att = random.choices(attacks, weights=(55, 25, 25), k=1)
         if att[0] == "Bite":

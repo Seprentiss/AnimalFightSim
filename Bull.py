@@ -13,7 +13,7 @@ class Bull:
     kick = (data.loc[0, animal] / 2.5) + data.loc[9,animal]
     charge = speed * (data.loc[9, animal] /500) * 3
     print(charge)
-    horn = charge / 1.80
+    horn = charge / 1.70
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge, kick
         self.health = health
@@ -25,7 +25,7 @@ class Bull:
         self.kick = kick
         self.oppBleed = oppBleed
 
-    def RandAttack(self):
+    def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow,horn,charge,kick
         att = random.choices(attacks, weights=(70,15,5), k=1)
         if att[0] == "Horn":
@@ -72,6 +72,3 @@ class Bull:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
-
-b = Bull()
-print(b.RandAttack())

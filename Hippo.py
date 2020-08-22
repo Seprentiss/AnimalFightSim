@@ -6,7 +6,7 @@ class Hippo:
     animal = "HIPPO"
     attacks = ["Bite", "Charge"]
     speed = data.loc[2, animal]
-    health = data.loc[6, animal] / 1.95
+    health = data.loc[6, animal] / 1.80
     ev = 10
     attPT = 1
     oppBleed = False
@@ -23,7 +23,7 @@ class Hippo:
         self.attPT = attPT
         self.oppBleed = oppBleed
 
-    def RandAttack(self):
+    def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow
         att = random.choices(attacks, weights=(85,15), k=1)
         if att[0] == "Bite":

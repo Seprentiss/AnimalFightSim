@@ -2,7 +2,7 @@ import pandas as pd
 import random
 
 class Lion:
-    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed
+    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed,inTree,oppInTree, attPow
     data = pd.read_csv("animalfight.csv")
     animal = "LION"
     attacks = ["Bite","Claw"]
@@ -12,11 +12,15 @@ class Lion:
     health = data.loc[6,animal] * 1.5
     ev = data.loc[3, animal]
     attPT = round(data.loc[14, animal])
-    clawBonus = punch * .18
+    clawBonus = punch * .25
     oppBleed = False
+    inTree = False
+    oppInTree = False
+    attPow = 0
+
 
     def __init__(self):
-        global health,speed,bite,punch,slam,attacks,attPT,oppBleed
+        global health,speed,bite,punch,slam,attacks,attPT,oppBleed,inTree, oppInTree
         self.health = health
         self.speed = speed
         self.attacks = attacks
@@ -25,11 +29,42 @@ class Lion:
         self.punch = punch
         self.attPT = attPT
         self.oppBleed = oppBleed
+        self.ev = ev
+        self.inTree = inTree
+        self.oppInTree = oppInTree
+
+    def ClimbTree(self):
+        global inTree, attPt
+        self.attPT = round(data.loc[14, animal])
+        if self.inTree is False and oppInTree is False:
+            treeClimbed = random.choices(["Yes", "No"], weights=(2, 98))
+            if treeClimbed[0] == "Yes":
+                self.inTree = True
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+        if self.inTree is False and oppInTree is True:
+            treeClimbed = random.choices(["Yes", "No"], weights=(40, 60))
+            if treeClimbed[0] == "Yes":
+                self.inTree = True
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+        else:
+            treeClimbed = random.choices(["Yes", "No"], weights=(80, 20))
+            if treeClimbed[0] == "Yes":
+                self.inTree = False
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
 
 
 
-    def RandAttack(self):
-        global attacks, clawBonus, bleeding
+    def PlainsRandAttack(self):
+        global attacks, clawBonus, bleeding, attPow
         att = random.choices(attacks, weights=(40, 60), k=1)
         if att[0] == "Bite":
             hit = random.choices(['T', 'F'], weights=(5, 95), k=1)
@@ -49,8 +84,80 @@ class Lion:
                 rB = random.choices(['T', 'F'], weights=(60, 40),k=1)
                 if rB[0] == "T":
                     self.OppBleed()
-
         return attPow
+
+    def JungleRandAttack(self):
+        global attacks, bleeding, inTree, oppInTree, attPow
+        if self.inTree is True and oppInTree is False:
+            hit = random.choices(['T', 'F'], weights=(40, 60))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = 0
+            return attPow
+        if self.inTree is True and oppInTree is True:
+            self.attacks = ["Bite", "Claw"]
+            att = random.choices(attacks, weights=(40, 60), k=1)
+            if att[0] == "Bite":
+                hit = random.choices(['T', 'F'], weights=(30, 70))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.bite
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Claw":
+                hit = random.choices(['T', 'F'], weights=(20, 80))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.punch + clawBonus
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            return attPow
+
+        if self.inTree is False and self.oppInTree is True:
+            att = random.choices(attacks, weights=(40, 60), k=1)
+            if att[0] == "Bite":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.bite
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Claw":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.punch
+            return attPow
+        else:
+            att = random.choices(attacks, weights=(40, 60), k=1)
+            if att[0] == "Bite":
+                hit = random.choices(['T', 'F'], weights=((5), 95))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.bite
+                    rB = random.choices(['T', 'F'], weights=(50, 50))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Claw":
+                hit = random.choices(['T', 'F'], weights=(5, 95))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.punch + clawBonus
+                    rB = random.choices(['T', 'F'], weights=(65, 35))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            return attPow
+
     def StrikeEvaded(self):
         global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
@@ -70,3 +177,5 @@ class Lion:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
+    def JungleStatAdj(self):
+        self.ev = self.ev - 15
