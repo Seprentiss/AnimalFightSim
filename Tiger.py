@@ -71,7 +71,7 @@ class Tiger:
                 attPow = 0
             else:
                 attPow = self.bite
-                rB = random.choices(['T', 'F'], weights=(50, 50))
+                rB = random.choices(['T', 'F'], weights=(70, 30))
                 if rB[0] == "T":
                     self.OppBleed()
         if att[0] == "Claw":
@@ -80,7 +80,7 @@ class Tiger:
                 attPow = 0
             else:
                 attPow = self.punch + clawBonus
-                rB = random.choices(['T', 'F'], weights=(65, 35))
+                rB = random.choices(['T', 'F'], weights=(70, 30))
                 if rB[0] == "T":
                     self.OppBleed()
         return attPow
@@ -104,7 +104,7 @@ class Tiger:
                     attPow = 0
                 else:
                     attPow = self.bite
-                    rB = random.choices(['T', 'F'], weights=(60, 40))
+                    rB = random.choices(['T', 'F'], weights=(70, 30))
                     if rB[0] == "T":
                         self.OppBleed()
             if att[0] == "Claw":
@@ -134,7 +134,7 @@ class Tiger:
                 if hit[0] == "T":
                     attPow = 0
                 else:
-                    attPow = self.punch
+                    attPow = self.punch + clawBonus
             return attPow
         else:
             att = random.choices(attacks, weights=(40, 60), k=1)
@@ -144,7 +144,7 @@ class Tiger:
                     attPow = 0
                 else:
                     attPow = self.bite
-                    rB = random.choices(['T', 'F'], weights=(50, 50))
+                    rB = random.choices(['T', 'F'], weights=(70, 30))
                     if rB[0] == "T":
                         self.OppBleed()
             if att[0] == "Claw":
@@ -181,4 +181,4 @@ class Tiger:
         return oppBleed
 
     def JungleStatAdj(self):
-        self.ev = self.ev + 150
+        self.ev = self.ev - 30

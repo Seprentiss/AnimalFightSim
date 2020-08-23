@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 class Bull:
-    global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge, kick
+    global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge,kick,inTree,oppInTree, attPow
     data = pd.read_csv("animalfight.csv")
     animal = "BULL"
     attacks = ["Horn", "Charge", "Kick"]
@@ -12,8 +12,10 @@ class Bull:
     oppBleed = False
     kick = (data.loc[0, animal] / 2.5) + data.loc[9,animal]
     charge = speed * (data.loc[9, animal] /500) * 3
-    print(charge)
     horn = charge / 1.70
+    inTree = False
+    oppInTree = False
+    attPow = 0
     def __init__(self):
         global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge, kick
         self.health = health
@@ -24,12 +26,42 @@ class Bull:
         self.attPT = attPT
         self.kick = kick
         self.oppBleed = oppBleed
+        self.ev = ev
+        self.inTree = inTree
+        self.oppInTree = oppInTree
+
+    def ClimbTree(self):
+        global inTree, attPt
+        if self.inTree is False and oppInTree is False:
+            treeClimbed = random.choices(["Yes", "No"], weights=(0, 100))
+            if treeClimbed[0] == "Yes":
+                self.inTree = True
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+        if self.inTree is False and oppInTree is True:
+            treeClimbed = random.choices(["Yes", "No"], weights=(0, 100))
+            if treeClimbed[0] == "Yes":
+                self.inTree = True
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+        else:
+            treeClimbed = random.choices(["Yes", "No"], weights=(100, 0))
+            if treeClimbed[0] == "Yes":
+                self.inTree = False
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
 
     def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow,horn,charge,kick
         att = random.choices(attacks, weights=(70,15,5), k=1)
         if att[0] == "Horn":
-            hit = random.choices(['T','F'], weights=(5,95),k=1)
+            hit = random.choices(['T','F'], weights=(10,90),k=1)
             if hit[0] == "T":
                 attPow = 0
             else:
@@ -38,19 +70,100 @@ class Bull:
                 if rB[0] == "T":
                     self.OppBleed()
         if att[0] == "Charge":
-            hit = random.choices(['T', 'F'], weights=(40, 60))
+            hit = random.choices(['T', 'F'], weights=(60, 40))
             if hit[0] == "T":
                 attPow = 0
             else:
                 attPow = self.charge
         if att[0] == "Kick":
-            hit = random.choices(['T', 'F'], weights=(50, 50))
+            hit = random.choices(['T', 'F'], weights=(60, 40))
             if hit[0] == "T":
                 attPow = 0
             else:
-                attPow = self.charge
+                attPow = self.kick
         return attPow
 
+    def JungleRandAttack(self):
+        global attacks, bleeding, inTree, oppInTree, attPow, clawBonus
+        if self.inTree is True and oppInTree is False:
+            hit = random.choices(['T', 'F'], weights=(30, 70))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = 0
+            return attPow
+        if self.inTree is True and oppInTree is True:
+            att = random.choices(attacks, weights=(70, 15, 5), k=1)
+            if att[0] == "Horn":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.horn
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Charge":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.charge
+            if att[0] == "Kick":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.kick
+            return attPow
+        if self.inTree is False and oppInTree is True:
+            att = random.choices(attacks, weights=(70, 15, 5), k=1)
+            if att[0] == "Horn":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.horn
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Charge":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.charge
+            if att[0] == "Kick":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.kick
+            return attPow
+        else:
+            att = random.choices(attacks, weights=(70, 15, 5), k=1)
+            if att[0] == "Horn":
+                hit = random.choices(['T', 'F'], weights=(15, 85), k=1)
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.horn
+                    rB = random.choices(['T', 'F'], weights=(70, 30), k=1)
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Charge":
+                hit = random.choices(['T', 'F'], weights=(70, 30))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.charge
+            if att[0] == "Kick":
+                hit = random.choices(['T', 'F'], weights=(60, 40))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.kick
+            return attPow
 
 
     def StrikeEvaded(self):
@@ -72,3 +185,7 @@ class Bull:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
+
+    def JungleStatAdj(self):
+        self.ev = self.ev - 30
+

@@ -61,7 +61,7 @@ class Gorilla:
             else:
                 return self.inTree
     def TreeSlamMiss(self):
-        self.health -= 150
+        self.health -= 300
 
 
     def PlainsRandAttack(self):

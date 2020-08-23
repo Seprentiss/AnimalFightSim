@@ -92,7 +92,7 @@ class Grizzly:
         return attPow
 
     def JungleRandAttack(self):
-        global attacks, bleeding, inTree, oppInTree, attPow
+        global attacks, bleeding, inTree, oppInTree, attPow,clawBonus
         if self.inTree is True and oppInTree is False:
             hit = random.choices(['T', 'F'], weights=(30, 70))
             if hit[0] == "T":
@@ -101,7 +101,7 @@ class Grizzly:
                 attPow = 0
             return attPow
         if self.inTree is True and oppInTree is True:
-            self.attacks = ["Bite", "Slap", "Tree Throw"]
+            self.attacks = ["Bite", "Claw", "Tree Throw"]
             att = random.choices(attacks, weights=(55, 15, 30), k=1)
             if att[0] == "Bite":
                 hit = random.choices(['T', 'F'], weights=(30,70))
@@ -112,12 +112,12 @@ class Grizzly:
                     rB = random.choices(['T', 'F'], weights=(40, 60))
                     if rB[0] == "T":
                         self.OppBleed()
-            if att[0] == "Slap":
+            if att[0] == "Claw":
                 hit = random.choices(['T', 'F'], weights=(40, 60))
                 if hit[0] == "T":
                     attPow = 0
                 else:
-                    attPow = self.punch
+                    attPow = self.punch + clawBonus
             if att[0] == "Tree Throw":
                 hit = random.choices(['T', 'F'], weights=(80, 20))
                 if hit[0] == "T":
@@ -138,12 +138,12 @@ class Grizzly:
                     rB = random.choices(['T', 'F'], weights=(40, 60))
                     if rB[0] == "T":
                         self.OppBleed()
-            if att[0] == "Slap":
+            if att[0] == "Claw":
                 hit = random.choices(['T', 'F'], weights=(100, 0))
                 if hit[0] == "T":
                     attPow = 0
                 else:
-                    attPow = self.punch
+                    attPow = self.punch + clawBonus
             if att[0] == "Slam":
                 hit = random.choices(['T', 'F'], weights=(100, 0))
                 if hit[0] == "T":

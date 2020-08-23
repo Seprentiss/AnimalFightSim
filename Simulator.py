@@ -286,7 +286,6 @@ def JungleSim(animalOne, animalTwo):
                         break
                 else:
                     Next(currentAnimal)
-
     if oneCount > twoCount:
         winP = float(oneCount / (num_of_tests / 100))
         print("The " + animalOne + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")

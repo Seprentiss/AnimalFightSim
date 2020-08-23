@@ -134,7 +134,7 @@ class Lion:
                 if hit[0] == "T":
                     attPow = 0
                 else:
-                    attPow = self.punch
+                    attPow = self.punch + clawBonus
             return attPow
         else:
             att = random.choices(attacks, weights=(40, 60), k=1)

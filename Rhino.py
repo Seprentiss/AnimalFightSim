@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 class Rhino:
-    global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge
+    global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge,inTree,oppInTree, attPow
     data = pd.read_csv("animalfight.csv")
     animal = "RHINO"
     attacks = ["Horn", "Charge"]
@@ -11,12 +11,13 @@ class Rhino:
     attPT = 1
     oppBleed = False
     charge = speed * (data.loc[9, animal] /500)
-    print(charge)
     horn = charge/1.45
-    print(horn)
+    inTree = False
+    oppInTree = False
+    attPow = 0
 
     def __init__(self):
-        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge
+        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge,inTree, oppInTree
         self.health = health
         self.speed = speed
         self.attacks = attacks
@@ -24,6 +25,37 @@ class Rhino:
         self.charge = charge
         self.attPT = attPT
         self.oppBleed = oppBleed
+        self.ev = ev
+        self.inTree = inTree
+        self.oppInTree = oppInTree
+
+    def ClimbTree(self):
+        global inTree, attPt
+        if self.inTree is False and oppInTree is False:
+            treeClimbed = random.choices(["Yes", "No"], weights=(0, 100))
+            if treeClimbed[0] == "Yes":
+                self.inTree = True
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+        if self.inTree is False and oppInTree is True:
+            treeClimbed = random.choices(["Yes", "No"], weights=(0, 100))
+            if treeClimbed[0] == "Yes":
+                self.inTree = True
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+        else:
+            treeClimbed = random.choices(["Yes", "No"], weights=(100, 0))
+            if treeClimbed[0] == "Yes":
+                self.inTree = False
+                self.attPT -= 1
+                return self.inTree
+            else:
+                return self.inTree
+
 
     def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow,horn,charge
@@ -45,6 +77,78 @@ class Rhino:
                 attPow = self.charge
         return attPow
 
+    def JungleRandAttack(self):
+        global attacks, bleeding, inTree, oppInTree, attPow
+        if self.inTree is True and oppInTree is False:
+            hit = random.choices(['T', 'F'], weights=(40, 60))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = 0
+            return attPow
+        if self.inTree is True and oppInTree is True:
+            self.attacks = ["Horn", "Charge"]
+            att = random.choices(attacks, weights=(40, 60), k=1)
+            if att[0] == "Horn":
+                hit = random.choices(['T', 'F'], weights=(30, 70))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.horn
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Charge":
+                hit = random.choices(['T', 'F'], weights=(20, 80))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.charge
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            return attPow
+
+        if self.inTree is False and self.oppInTree is True:
+            att = random.choices(attacks, weights=(85, 15), k=1)
+            if att[0] == "Horn":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.horn
+                    rB = random.choices(['T', 'F'], weights=(40, 60))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Charge":
+                hit = random.choices(['T', 'F'], weights=(100, 0))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.charge
+            return attPow
+        else:
+            att = random.choices(attacks, weights=(85, 15), k=1)
+            if att[0] == "Horn":
+                hit = random.choices(['T', 'F'], weights=(10, 90))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.horn
+                    rB = random.choices(['T', 'F'], weights=(50, 50))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            if att[0] == "Charge":
+                hit = random.choices(['T', 'F'], weights=(70, 30))
+                if hit[0] == "T":
+                    attPow = 0
+                else:
+                    attPow = self.charge
+                    rB = random.choices(['T', 'F'], weights=(70, 30))
+                    if rB[0] == "T":
+                        self.OppBleed()
+            return attPow
+
     def StrikeEvaded(self):
         global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
@@ -64,3 +168,6 @@ class Rhino:
         oppBleed = True
         self.oppBleed = oppBleed
         return oppBleed
+
+    def JungleStatAdj(self):
+        self.ev = 0
