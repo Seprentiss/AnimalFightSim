@@ -3,11 +3,13 @@ import random
 
 
 class Grizzly:
-    global grizz_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, clawBonus, oppBleed, inTree, oppInTree, attPow
+    global grizz_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, clawBonus, oppBleed, inTree, oppInTree, attPow, size, intel,isCamouflaged
     grizz_data = pd.read_csv("animalfight.csv")
     animal = "GRIZZLY BEAR"
     attacks = ["Bite", "Claw", "Slam"]
     speed = grizz_data.loc[2, animal]
+    intel = grizz_data.loc[5, animal]
+    size = grizz_data.loc[9, animal]
     bite = grizz_data.loc[12, animal]
     punch = (grizz_data.loc[13, animal])
     slam = punch * 2
@@ -19,11 +21,14 @@ class Grizzly:
     inTree = False
     oppInTree = False
     attPow = 0
+    isCamouflaged = False
 
     def __init__(self):
-        global health, speed, bite, punch, slam, attacks, attPT, oppBleed, inTree, opInTree
+        global health, speed, bite, punch, slam, attacks, attPT, oppBleed, inTree, opInTree,isCamouflaged
         self.health = health
         self.speed = speed
+        self.size = size
+        self.intel = intel
         self.attacks = attacks
         self.bite = bite
         self.punch = punch
@@ -33,6 +38,7 @@ class Grizzly:
         self.ev = ev
         self.inTree = inTree
         self.oppInTree = oppInTree
+        self.isCamouflaged = isCamouflaged
 
     def ClimbTree(self):
         global inTree, attPt
@@ -61,6 +67,14 @@ class Grizzly:
                 return self.inTree
             else:
                 return self.inTree
+
+    def CamoAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        hit = random.choices(['T', 'F'], weights=(95, 5))
+        if hit[0] == "T":
+            return "hit"
+        else:
+            return "miss"
 
     def PlainsRandAttack(self):
         global attacks, clawBonus, bleeding
@@ -209,8 +223,11 @@ class Grizzly:
             return self.oppInTree
 
     def JungleStatAdj(self):
-        global attacks
+        global attacks, isCamouflaged
         self.attacks = ["Bite, Punch", "Slam", "Tree Toss"]
         self.ev = self.ev - 25
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT +=1
 
 

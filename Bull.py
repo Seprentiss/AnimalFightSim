@@ -1,11 +1,13 @@
 import pandas as pd
 import random
 class Bull:
-    global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge,kick,inTree,oppInTree, attPow
+    global data, animal, health, speed, tusk, stomp, horn, attacks, ev, attPT, teethBonus, oppBleed, charge,kick,inTree,oppInTree, attPow,isCamouflaged, size, intel
     data = pd.read_csv("animalfight.csv")
     animal = "BULL"
     attacks = ["Horn", "Charge", "Kick"]
     speed = data.loc[2, animal]
+    intel = data.loc[5, animal]
+    size = data.loc[9, animal]
     health = data.loc[6, animal]
     ev = 45
     attPT = round(data.loc[14, animal])
@@ -16,10 +18,13 @@ class Bull:
     inTree = False
     oppInTree = False
     attPow = 0
+    isCamouflaged = False
     def __init__(self):
-        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge, kick
+        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, horn,charge, kick,isCamouflaged, size, intel
         self.health = health
         self.speed = speed
+        self.size = size
+        self.intel = intel
         self.attacks = attacks
         self.horn = horn
         self.charge = charge
@@ -29,6 +34,7 @@ class Bull:
         self.ev = ev
         self.inTree = inTree
         self.oppInTree = oppInTree
+        self.isCamouflaged = isCamouflaged
 
     def ClimbTree(self):
         global inTree, attPt
@@ -56,6 +62,16 @@ class Bull:
                 return self.inTree
             else:
                 return self.inTree
+
+    def CamoAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        hit = random.choices(['T', 'F'], weights=(95, 5))
+        if hit[0] == "T":
+            self.attPT -= 1
+            return "hit"
+        else:
+            self.attPT -= 1
+            return "miss"
 
     def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow,horn,charge,kick
@@ -188,4 +204,7 @@ class Bull:
 
     def JungleStatAdj(self):
         self.ev = self.ev - 30
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
 

@@ -1,11 +1,13 @@
 import pandas as pd
 import random
 class Hippo:
-    global data, animal, health, speed, tusk, stomp, charge, attacks, ev, attPT, teethBonus, oppBleed,bite,inTree,oppInTree,attPow
+    global data, animal, health, speed, tusk, stomp, charge, attacks, ev, attPT, teethBonus, oppBleed,bite,inTree,oppInTree,attPow,isCamouflaged, size, intel
     data = pd.read_csv("animalfight.csv")
     animal = "HIPPO"
     attacks = ["Bite", "Charge"]
     speed = data.loc[2, animal]
+    intel = data.loc[5, animal]
+    size = data.loc[9, animal]
     health = data.loc[6, animal] / 1.80
     ev = 10
     attPT = 1
@@ -16,11 +18,14 @@ class Hippo:
     inTree = False
     oppInTree = False
     attPow = 0
+    isCamouflaged = False
 
     def __init__(self):
-        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, charge,inTree, oppInTree
+        global health, speed, tusk, stomp, slam, attacks, attPT, oppBleed, charge,inTree, oppInTree,isCamouflaged, size, intel
         self.health = health
         self.speed = speed
+        self.size = size
+        self.intel = intel
         self.attacks = attacks
         self.charge = charge
         self.bite = bite
@@ -29,6 +34,7 @@ class Hippo:
         self.ev = ev
         self.inTree = inTree
         self.oppInTree = oppInTree
+        self.isCamouflaged = isCamouflaged
 
     def ClimbTree(self):
         global inTree, attPt
@@ -56,6 +62,16 @@ class Hippo:
                 return self.inTree
             else:
                 return self.inTree
+
+    def CamoAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        hit = random.choices(['T', 'F'], weights=(95, 5))
+        if hit[0] == "T":
+            self.attPT -= 1
+            return "hit"
+        else:
+            self.attPT -= 1
+            return "miss"
 
     def PlainsRandAttack(self):
         global attacks,teethBonus,bleeding, attPow
@@ -168,3 +184,6 @@ class Hippo:
 
     def JungleStatAdj(self):
         self.ev = 0
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1

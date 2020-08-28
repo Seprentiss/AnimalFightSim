@@ -3,12 +3,14 @@ import random
 
 
 class Gorilla:
-    global g_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, bleeding, oppBleed, inTree, oppInTree,attPow
+    global g_data, animal, health, speed, bite, punch, slam, attacks, ev, attPT, bleeding, oppBleed, inTree, oppInTree,attPow,isCamouflaged, size, intel
     g_data = pd.read_csv("animalfight.csv")
     animal = "GORILLA"
     attacks = ["Bite", "Slap", "Slam"]
     speed = g_data.loc[2, animal]
     bite = g_data.loc[12, animal]
+    intel = g_data.loc[5, animal]
+    size = g_data.loc[9, animal]
     punch = (g_data.loc[13, animal])
     slam = punch * 2.25
     health = g_data.loc[6, animal]
@@ -18,11 +20,14 @@ class Gorilla:
     oppBleed = False
     inTree = False
     oppInTree = False
+    isCamouflaged = False
 
     def __init__(self):
-        global health, speed, bite, punch, slam, attacks, attPT, oppBleed,inTree, opInTree
+        global health, speed, bite, punch, slam, attacks, attPT, oppBleed,inTree, opInTree,isCamouflaged, size, intel
         self.health = health
         self.speed = speed
+        self.size = size
+        self.intel = intel
         self.attacks = attacks
         self.bite = bite
         self.punch = punch
@@ -32,6 +37,7 @@ class Gorilla:
         self.ev = ev
         self.inTree = inTree
         self.oppInTree = oppInTree
+        self.isCamouflaged = isCamouflaged
 
     def ClimbTree(self):
         global inTree,attPt,oppInTree
@@ -62,6 +68,16 @@ class Gorilla:
                 return self.inTree
     def TreeSlamMiss(self):
         self.health -= 300
+
+    def CamoAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        hit = random.choices(['T', 'F'], weights=(95, 5))
+        if hit[0] == "T":
+            self.attPT -= 1
+            return "hit"
+        else:
+            self.attPT -= 1
+            return "miss"
 
 
     def PlainsRandAttack(self):
@@ -211,4 +227,7 @@ class Gorilla:
         global attacks
         self.attacks = ["Bite, Punch", "Slam", "Tree Slam"]
         self.ev = self.ev + 50
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
 

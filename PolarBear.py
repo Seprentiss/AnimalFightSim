@@ -2,11 +2,13 @@ import pandas as pd
 import random
 
 class PolarBear:
-    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed,inTree, oppInTree, attPow
+    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed,inTree, oppInTree, attPow,isCamouflaged, size, intel
     data = pd.read_csv("animalfight.csv")
     animal = "POLAR BEAR"
     attacks = ["Bite","Claw", "Slam"]
     speed = data.loc[2, animal]
+    intel = data.loc[5, animal]
+    size = data.loc[9, animal]
     bite = data.loc[12, animal]
     punch = (data.loc[13,animal])
     slam = punch * 2
@@ -18,11 +20,14 @@ class PolarBear:
     inTree = False
     oppInTree = False
     attPow = 0
+    isCamouflaged = False
 
     def __init__(self):
-        global health,speed,bite,punch,slam,attacks,attPT,oppBleed,inTree, opInTree
+        global health,speed,bite,punch,slam,attacks,attPT,oppBleed,inTree, opInTree,isCamouflaged, size, intel
         self.health = health
         self.speed = speed
+        self.size = size
+        self.intel = intel
         self.attacks = attacks
         self.bite = bite
         self.punch = punch
@@ -32,6 +37,7 @@ class PolarBear:
         self.ev = ev
         self.inTree = inTree
         self.oppInTree = oppInTree
+        self.isCamouflaged = isCamouflaged
 
     def ClimbTree(self):
         global inTree, attPt
@@ -60,6 +66,16 @@ class PolarBear:
                 return self.inTree
             else:
                 return self.inTree
+
+    def CamoAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        hit = random.choices(['T', 'F'], weights=(95, 5))
+        if hit[0] == "T":
+            self.attPT -= 1
+            return "hit"
+        else:
+            self.attPT -= 1
+            return "miss"
 
 
 
@@ -204,3 +220,6 @@ class PolarBear:
     def JungleStatAdj(self):
         global attacks
         self.ev = self.ev - 10
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1

@@ -2,11 +2,13 @@ import pandas as pd
 import random
 
 class Lion:
-    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed,inTree,oppInTree, attPow
+    global data,animal, health, speed,bite,punch,slam,attacks,ev,attPT,clawBonus,oppBleed,inTree,oppInTree, attPow,isCamouflaged, size, intel
     data = pd.read_csv("animalfight.csv")
     animal = "LION"
     attacks = ["Bite","Claw"]
     speed = data.loc[2, animal]
+    intel = data.loc[5, animal]
+    size = data.loc[9, animal]
     bite = data.loc[12, animal]
     punch = data.loc[13, animal]
     health = data.loc[6,animal] * 1.5
@@ -17,12 +19,15 @@ class Lion:
     inTree = False
     oppInTree = False
     attPow = 0
+    isCamouflaged = False
 
 
     def __init__(self):
-        global health,speed,bite,punch,slam,attacks,attPT,oppBleed,inTree, oppInTree
+        global health,speed,bite,punch,slam,attacks,attPT,oppBleed,inTree, oppInTree,isCamouflaged, size, intel
         self.health = health
         self.speed = speed
+        self.size = size
+        self.intel = intel
         self.attacks = attacks
         self.health = health
         self.bite = bite
@@ -32,6 +37,7 @@ class Lion:
         self.ev = ev
         self.inTree = inTree
         self.oppInTree = oppInTree
+        self.isCamouflaged = isCamouflaged
 
     def ClimbTree(self):
         global inTree, attPt
@@ -179,3 +185,6 @@ class Lion:
         return oppBleed
     def JungleStatAdj(self):
         self.ev = self.ev - 15
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
