@@ -14,4 +14,11 @@ The random variables in this case are the stats of the Animals and the location 
 
 After the variables are inputed and calculted the simulation spits out a winner and what percentage of fights it would win
 
+## How were the stats created
+Creating the stats took hours of research. I had to look into many different characteristics of each animal. Characteristics like intelligence, strength, height, speed, etc.
+I also had to create my own stats like health that take into account both an animals size and their durabillity. I also created an attacks per turn stat that is based off of an animals size, speed, agillity, and stamina. I also has to create tendencies for each animal. Tendencies like how often do they climb trees, do they camoflaugue themselves in certain enviornments etc.
+Some of the stats had to be adjusted slightly for balancing purposes
 
+## Overall experience/ What I learned
+This project taught me a lot. I was able to sharpen my coding skills as well as fully complete a project from start to end without a prior template being provided.
+I learned how to create metrics and how to balance them to achieve results and learned how to create a montecarlo sim. I thourouly enjoyed this project and had a blast working on it. Ill be continuing to update it with further features like more animals and terrains.
