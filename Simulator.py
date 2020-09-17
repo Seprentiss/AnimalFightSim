@@ -35,72 +35,35 @@ num_of_tests = 10000
 
 
 def AnimalOneSelection(animalOne):
-    global one
-    if animalOne == "Gorilla":
-        one = Gorilla()
-        return one
-    if animalOne == "Grizzly Bear":
-        one = Grizzly()
-        return one
-    if animalOne == "Polar Bear":
-        one = PolarBear()
-        return one
-    if animalOne == "Tiger":
-        one = Tiger()
-        return one
-    if animalOne == "Lion":
-        one = Lion()
-        return one
-    if animalOne == "Elephant":
-        one = Elephant()
-        return one
-    if animalOne == "Hippo":
-        one = Hippo()
-        return one
-    if animalOne == "Rhino":
-        one = Rhino()
-        return one
-    if animalOne == "Bull":
-        one = Bull()
-        return one
-    if animalOne == "Bison":
-        one = Bison()
-        return one
+    switcher = {
+        "Gorilla": Gorilla(),
+        "Grizzly Bear": Grizzly(),
+        "Polar Bear": PolarBear()  ,
+        "Tiger": Tiger(),
+        "Lion": Lion(),
+        "Elephant": Elephant(),
+        "Hippo": Hippo(),
+        "Rhino": Rhino(),
+        "Bull": Bull(),
+        "Bison": Bison()
+    }
+    return switcher.get(animalOne, "Invalid Animal")
 
 
 def AnimalTwoSelection(animalTwo):
-    global two
-    if animalTwo == "Gorilla":
-        two = Gorilla()
-        return two
-    if animalTwo == "Grizzly Bear":
-        two = Grizzly()
-        return two
-    if animalTwo == "Polar Bear":
-        two = PolarBear()
-        return two
-    if animalTwo == "Tiger":
-        two = Tiger()
-        return two
-    if animalTwo == "Lion":
-        two = Lion()
-        return two
-    if animalTwo == "Elephant":
-        two = Elephant()
-        return two
-    if animalTwo == "Hippo":
-        two = Hippo()
-        return two
-    if animalTwo == "Rhino":
-        two = Rhino()
-        return two
-    if animalTwo == "Bull":
-        two = Bull()
-        return two
-    if animalTwo == "Bison":
-        two = Bison()
-        return two
-
+    switcher = {
+        "Gorilla": Gorilla(),
+        "Grizzly Bear": Grizzly(),
+        "Polar Bear": PolarBear(),
+        "Tiger": Tiger(),
+        "Lion": Lion(),
+        "Elephant": Elephant(),
+        "Hippo": Hippo(),
+        "Rhino": Rhino(),
+        "Bull": Bull(),
+        "Bison": Bison()
+    }
+    return switcher.get(animalTwo, "Invalid Animal")
 
 def Next(current):
     global currentAnimal
@@ -108,6 +71,8 @@ def Next(current):
         currentAnimal = 2
     if current == 2:
         currentAnimal = 1
+
+
 
 # Handles all Simulations in the Plains Biome
 def PlainsSim(animalOne, animalTwo):
@@ -194,6 +159,8 @@ def PlainsSim(animalOne, animalTwo):
     if twoCount > oneCount:
         winP = float(twoCount / (num_of_tests / 100))
         print("The " + animalTwo + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
+
+
 
 # Handles all Simulations in the Jungle Biome
 def JungleSim(animalOne, animalTwo):
@@ -483,7 +450,7 @@ def JungleSim(animalOne, animalTwo):
         winP = float(twoCount / (num_of_tests / 100))
         print("The " + animalTwo + " Wins:" + "\nThey Won " + str(winP) + "% of the Match-ups")
 
-
+# Handles Start up and Selection of animals and terrain
 def Start():
     global animals, terrains
     combatants = animals
@@ -514,8 +481,9 @@ def Start():
                     time.sleep(.7)
 
                     while not tEnd:
+                        print("\n\n")
                         print(*terrains, sep="\n")
-                        terrain = input("\n\nPlease Select The Terrain: ")
+                        terrain = input("Please Select The Terrain: ")
                         if terrain in terrains:
                             tEnd = True
                             if terrain == "Plains":
