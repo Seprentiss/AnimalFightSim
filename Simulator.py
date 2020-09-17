@@ -33,6 +33,8 @@ two = ""
 
 num_of_tests = 10000
 
+combatants = []
+
 
 def AnimalOneSelection(animalOne):
     switcher = {
@@ -78,6 +80,8 @@ def Next(current):
 # Handles all Simulations in the Plains Biome
 def PlainsSim(animalOne, animalTwo):
     global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, num_of_tests
+    oneCount=0
+    twoCount = 0
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -166,6 +170,8 @@ def PlainsSim(animalOne, animalTwo):
 # Handles all Simulations in the Jungle Biome
 def JungleSim(animalOne, animalTwo):
     global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, num_of_tests
+    oneCount = 0
+    twoCount = 0
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -454,6 +460,8 @@ def JungleSim(animalOne, animalTwo):
 
 def ArcticSim(animalOne, animalTwo):
     global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, num_of_tests
+    oneCount = 0
+    twoCount = 0
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -733,6 +741,8 @@ def ArcticSim(animalOne, animalTwo):
 # Handles all Simulations in the Plains Biome
 def DesertSim(animalOne, animalTwo):
     global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, num_of_tests
+    oneCount = 0
+    twoCount = 0
     print("Simulating Match-up...\n")
     time.sleep(.5)
     for n in trange(num_of_tests):
@@ -830,54 +840,77 @@ def DesertSim(animalOne, animalTwo):
 
 # Handles Start up and Selection of animals and terrain
 def Start():
-    global animals, terrains
+    global animals, terrains, combatants
     combatants = animals
     e = False
     e2 = False
 
     tEnd = False
 
+    contSim = False
+
     print("=====================\n"
           "Welcome to the Animal Fight Simulator\n"
           "The Purpose of this program is to settle the debate of what animal would win in a fight\n"
-          "=====================")
+          "=====================\n")
 
-    while not e:
-        print(*combatants, sep="\n")
-        anOne = input("Please Select Your First Combatant: ")
-        if anOne in combatants:
-            index = anOne
-            combatants.remove(index)
-            e = True
-            while not e2:
-                print(*combatants, sep="\n")
-                anTwo = input("Please Select Your Second Combatant: ")
-                if anTwo in combatants:
-                    index = anTwo
-                    combatants.remove(index)
-                    e2 = True
-                    time.sleep(.7)
+    cont = input("Would you like to use the Animal Fight Simulator? Type 0 for No and 1 for Yes: ")
+    if cont == "1":
+        contSim = True
+    while contSim:
+        animals = ["Gorilla", "Grizzly Bear", "Polar Bear", "Elephant", "Hippo", "Rhino", "Lion", "Tiger", "Bull",
+                   "Bison"]
+        e = False
+        e2 = False
+        tEnd = False
+        while not e:
+            print("")
+            print(*combatants, sep="\n")
+            anOne = input("Please Select Your First Combatant From The List Above: ")
+            if anOne in animals:
+                index = anOne
+                remCombatants = animals
+                remCombatants.remove(index)
 
-                    while not tEnd:
-                        print("\n\n")
-                        print(*terrains, sep="\n")
-                        terrain = input("Please Select The Terrain: ")
-                        if terrain in terrains:
-                            tEnd = True
-                            if terrain == "Plains":
-                                PlainsSim(anOne, anTwo)
-                            if terrain == "Jungle":
-                                JungleSim(anOne, anTwo)
-                            if terrain == "Arctic":
-                                ArcticSim(anOne, anTwo)
-                            if terrain == "Desert":
-                                DesertSim(anOne, anTwo)
-                        else:
-                            print("\nTerrain Not Available\nTry Again\n")
-                else:
-                    print("\nAnimal Not Found\nTry Again\n")
+                e = True
+                while not e2:
+                    print("")
+                    print(*remCombatants, sep="\n")
+                    anTwo = input("\nPlease Select Your Second Combatant From The List OF Remaining Animals Above: ")
+                    if anTwo in remCombatants:
+                        index = anTwo
+                        remCombatants.remove(index)
+                        e2 = True
+                        time.sleep(.7)
+
+                        while not tEnd:
+                            print("")
+                            print(*terrains, sep="\n")
+                            terrain = input("Please Select The Terrain: ")
+                            if terrain in terrains:
+                                tEnd = True
+                                if terrain == "Plains":
+                                    PlainsSim(anOne, anTwo)
+                                if terrain == "Jungle":
+                                    JungleSim(anOne, anTwo)
+                                if terrain == "Arctic":
+                                    ArcticSim(anOne, anTwo)
+                                if terrain == "Desert":
+                                    DesertSim(anOne, anTwo)
+                            else:
+                                print("\nTerrain Not Available\nTry Again\n")
+                    else:
+                        print("\nAnimal Not Found\nTry Again\n")
+            else:
+                print("Try again")
+        cont = input("\nWould you like to run another sim? Type 0 to quit and 1 to continue ")
+        if cont == "1":
+            contSim = True
         else:
-            print("Try again")
+            print("Thank you for using the Animal Fight Simulator")
+            SystemExit
+            break
+
 
 
 Start()

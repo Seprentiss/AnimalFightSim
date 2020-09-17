@@ -295,7 +295,7 @@ class Gorilla:
 
     def DesertStatAdj(self):
         global attacks
-        self.attPT = round((((g_data.loc[5, animal] / 5 + g_data.loc[3, animal] / 4) * (g_data.loc[8, animal]-1)) - (math.sqrt(g_data.loc[10, animal]))) / 30)
+        self.attPT = round((((g_data.loc[4, animal] / 5 + g_data.loc[2, animal] / 4) * (g_data.loc[7, animal]-1)) - (math.sqrt(g_data.loc[9, animal]))) / 30)
         self.ev = self.ev -20
         self.speed -= 2
         self.isCamouflaged = False
