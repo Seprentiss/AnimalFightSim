@@ -186,6 +186,58 @@ class Elephant:
                     attPow = self.ram
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks,clawBonus,bleeding, attPow
+        att = random.choices(attacks, weights=(70, 5, 25), k=1)
+        if att[0] == "Tusk":
+            hit = random.choices(['T','F'], weights=(65, 45),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.tusk
+                rB = random.choices(['T','F'], weights=(40,60),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Stomp":
+            hit = random.choices(['T', 'F'], weights=(98 , 2),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.stomp
+        if att[0] == "Ram":
+            hit = random.choices(['T', 'F'], weights=(80, 20))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.ram
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks,clawBonus,bleeding, attPow
+        att = random.choices(attacks, weights=(75, 5, 20), k=1)
+        if att[0] == "Tusk":
+            hit = random.choices(['T','F'], weights=(65, 45),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.tusk
+                rB = random.choices(['T','F'], weights=(40,60),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Stomp":
+            hit = random.choices(['T', 'F'], weights=(98 , 2),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.stomp
+        if att[0] == "Ram":
+            hit = random.choices(['T', 'F'], weights=(80, 20))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.ram
+        return attPow
+
 
     def StrikeEvaded(self):
         global ev, data, animal
@@ -209,6 +261,22 @@ class Elephant:
 
     def JungleStatAdj(self):
         self.ev = 0
+        self.speed -= 10
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def ArcticStatAdj(self):
+        self.ev = 0
+        self.speed -= 15
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def DesertStatAdj(self):
+        self.ev = 0
+        self.attPT = 1
+        self.speed -= 15
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1

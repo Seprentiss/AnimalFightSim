@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+import math
 
 
 class Gorilla:
@@ -21,6 +22,7 @@ class Gorilla:
     inTree = False
     oppInTree = False
     isCamouflaged = False
+
 
     def __init__(self):
         global health, speed, bite, punch, slam, attacks, attPT, oppBleed,inTree, opInTree,isCamouflaged, size, intel
@@ -194,6 +196,58 @@ class Gorilla:
                     attPow = self.slam
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks, bleeding, attPow
+        att = random.choices(attacks, weights=(65, 25, 10), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(4, 96))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(40, 60))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Slap":
+            hit = random.choices(['T', 'F'], weights=(3, 97))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch
+        if att[0] == "Slam":
+            hit = random.choices(['T', 'F'], weights=(3, 98))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.slam
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks, bleeding, attPow
+        att = random.choices(attacks, weights=(65, 25, 10), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(4, 96))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(40, 60))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Slap":
+            hit = random.choices(['T', 'F'], weights=(3, 97))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch
+        if att[0] == "Slam":
+            hit = random.choices(['T', 'F'], weights=(3, 98))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.slam
+        return attPow
+
     def StrikeEvaded(self):
         global ev, g_data, animal
         dodge = round(self.ev / 10) + round(g_data.loc[4, animal] / 10)
@@ -230,4 +284,23 @@ class Gorilla:
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1
+
+    def ArcticStatAdj(self):
+        global attacks
+        self.ev = self.ev -25
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def DesertStatAdj(self):
+        global attacks
+        self.attPT = round((((g_data.loc[5, animal] / 5 + g_data.loc[3, animal] / 4) * (g_data.loc[8, animal]-1)) - (math.sqrt(g_data.loc[10, animal]))) / 30)
+        self.ev = self.ev -20
+        self.speed -= 2
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+
 

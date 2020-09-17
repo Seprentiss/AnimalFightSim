@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 import random
 
@@ -176,6 +178,51 @@ class Tiger:
                         self.OppBleed()
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        att = random.choices(attacks, weights=(40, 60), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(5, 95))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(70, 30))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Claw":
+            hit = random.choices(['T', 'F'], weights=(5, 95))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch + clawBonus
+                rB = random.choices(['T', 'F'], weights=(70, 30))
+                if rB[0] == "T":
+                    self.OppBleed()
+        return attPow
+    def DesertRandAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        att = random.choices(attacks, weights=(40, 60), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(5, 95))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(70, 30))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Claw":
+            hit = random.choices(['T', 'F'], weights=(5, 95))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch + clawBonus
+                rB = random.choices(['T', 'F'], weights=(70, 30))
+                if rB[0] == "T":
+                    self.OppBleed()
+        return attPow
+
 
 
     def StrikeEvaded(self):
@@ -200,7 +247,25 @@ class Tiger:
 
     def JungleStatAdj(self):
         global isCamouflaged
-        self.ev = self.ev - 30
+        self.ev = self.ev - 5
         self.isCamouflaged = True
+        if self.isCamouflaged:
+            self.attPT +=1
+
+    def ArcticStatAdj(self):
+        global isCamouflaged
+        self.ev = self.ev - 30
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT +=1
+
+    def DesertStatAdj(self):
+        global isCamouflaged
+        self.ev = self.ev - 30
+        self.attPT = round((((data.loc[4, animal] / 5 + data.loc[2, animal] / 4) * (data.loc[7, animal] - 1)) - (
+            math.sqrt(data.loc[9, animal]))) / 30)
+        self.speed -= 5
+        self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT +=1

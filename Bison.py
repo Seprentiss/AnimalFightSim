@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 import random
 class Bison:
@@ -163,6 +165,46 @@ class Bison:
                         self.OppBleed()
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks, teethBonus, bleeding, attPow, horn, charge
+        att = random.choices(attacks, weights=(85, 15), k=1)
+        if att[0] == "Horn":
+            hit = random.choices(['T', 'F'], weights=(5, 95), k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.horn
+                rB = random.choices(['T', 'F'], weights=(60, 40), k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(65,35 ))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.charge
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks, teethBonus, bleeding, attPow, horn, charge
+        att = random.choices(attacks, weights=(90, 10), k=1)
+        if att[0] == "Horn":
+            hit = random.choices(['T', 'F'], weights=(5, 95), k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.horn
+                rB = random.choices(['T', 'F'], weights=(60, 40), k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(70,30))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.charge
+        return attPow
+
     def StrikeEvaded(self):
         global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
@@ -185,6 +227,23 @@ class Bison:
 
     def JungleStatAdj(self):
         self.ev = self.ev - 30
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def ArcticStatAdj(self):
+        self.ev = self.ev - 30
+        self.speed -= 6
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def DesertStatAdj(self):
+        self.ev = self.ev - 30
+        self.speed -= 6
+        self.attPT = round((((data.loc[4, animal] / 5 + data.loc[2, animal] / 4) * (data.loc[7, animal] - 1)) - (
+            math.sqrt(data.loc[9, animal]))) / 30)
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1

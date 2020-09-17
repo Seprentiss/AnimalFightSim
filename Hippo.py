@@ -162,6 +162,46 @@ class Hippo:
                     attPow = self.charge
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks,teethBonus,bleeding, attPow
+        att = random.choices(attacks, weights=(85,15), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T','F'], weights=(10,90),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite + teethBonus
+                rB = random.choices(['T','F'], weights=(75,25),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(45, 55))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.charge
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks, teethBonus, bleeding, attPow
+        att = random.choices(attacks, weights=(90, 10), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(10, 90), k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite + teethBonus
+                rB = random.choices(['T', 'F'], weights=(75, 25), k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(50, 50))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.charge
+        return attPow
+
     def StrikeEvaded(self):
         global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
@@ -184,6 +224,20 @@ class Hippo:
 
     def JungleStatAdj(self):
         self.ev = 0
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+    def ArcticStatAdj(self):
+        self.ev = 0
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def DesertStatAdj(self):
+        self.ev = 0
+        self.speed -= 5
+        self.attPT = 1
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1

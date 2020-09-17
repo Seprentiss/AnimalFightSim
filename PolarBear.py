@@ -196,6 +196,64 @@ class PolarBear:
                     attPow = self.slam
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks,clawBonus,bleeding
+        att = random.choices(attacks, weights=(55, 25, 25), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T','F'], weights=(7,93))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T','F'], weights=(45,55))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Claw":
+            hit = random.choices(['T', 'F'], weights=(10, 90))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch + clawBonus
+                rB = random.choices(['T', 'F'], weights=(20, 80))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Slam":
+            hit = random.choices(['T', 'F'], weights=(10, 90))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.slam
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks, clawBonus, bleeding
+        att = random.choices(attacks, weights=(55, 25, 25), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(7, 93))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(45, 55))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Claw":
+            hit = random.choices(['T', 'F'], weights=(10, 90))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch + clawBonus
+                rB = random.choices(['T', 'F'], weights=(20, 80))
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Slam":
+            hit = random.choices(['T', 'F'], weights=(10, 90))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.slam
+        return attPow
+
 
     def StrikeEvaded(self):
         global ev, data, animal
@@ -223,3 +281,19 @@ class PolarBear:
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1
+
+    def ArcticStatAdj(self):
+        global attacks
+        self.ev = self.ev + 5
+        self.isCamouflaged = True
+        if self.isCamouflaged:
+            self.attPT += 0
+
+    def DesertStatAdj(self):
+        global attacks
+        self.ev = 0
+        self.attPT = 1
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 0

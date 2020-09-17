@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 import random
 class Bull:
@@ -181,6 +183,58 @@ class Bull:
                     attPow = self.kick
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks,teethBonus,bleeding, attPow,horn,charge,kick
+        att = random.choices(attacks, weights=(70,15,5), k=1)
+        if att[0] == "Horn":
+            hit = random.choices(['T','F'], weights=(10,90),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.horn
+                rB = random.choices(['T','F'], weights=(70,30),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(70, 30))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.charge
+        if att[0] == "Kick":
+            hit = random.choices(['T', 'F'], weights=(60, 40))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.kick
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks, teethBonus, bleeding, attPow, horn, charge, kick
+        att = random.choices(attacks, weights=(75, 10, 5), k=1)
+        if att[0] == "Horn":
+            hit = random.choices(['T', 'F'], weights=(10, 90), k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.horn
+                rB = random.choices(['T', 'F'], weights=(70, 30), k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Charge":
+            hit = random.choices(['T', 'F'], weights=(75, 25))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.charge
+        if att[0] == "Kick":
+            hit = random.choices(['T', 'F'], weights=(60, 40))
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.kick
+        return attPow
+
 
     def StrikeEvaded(self):
         global ev, data, animal
@@ -204,6 +258,23 @@ class Bull:
 
     def JungleStatAdj(self):
         self.ev = self.ev - 30
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def ArcticStatAdj(self):
+        self.ev = self.ev - 30
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def DesertStatAdj(self):
+        self.ev = self.ev - 30
+        self.speed -= 5
+        self.attPT = round((((data.loc[4, animal] / 5 + data.loc[2, animal] / 4) * (data.loc[7, animal] - 1)) - (
+            math.sqrt(data.loc[9, animal]))) / 30)
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1

@@ -1,3 +1,5 @@
+import math
+
 import pandas as pd
 import random
 
@@ -164,6 +166,52 @@ class Lion:
                         self.OppBleed()
             return attPow
 
+    def ArcticRandAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        att = random.choices(attacks, weights=(40, 60), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(5, 95), k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(45, 55),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Claw":
+            hit = random.choices(['T', 'F'], weights=(5, 95),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch + clawBonus
+                rB = random.choices(['T', 'F'], weights=(60, 40),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        return attPow
+
+    def DesertRandAttack(self):
+        global attacks, clawBonus, bleeding, attPow
+        att = random.choices(attacks, weights=(40, 60), k=1)
+        if att[0] == "Bite":
+            hit = random.choices(['T', 'F'], weights=(5, 95), k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.bite
+                rB = random.choices(['T', 'F'], weights=(45, 55),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        if att[0] == "Claw":
+            hit = random.choices(['T', 'F'], weights=(5, 95),k=1)
+            if hit[0] == "T":
+                attPow = 0
+            else:
+                attPow = self.punch + clawBonus
+                rB = random.choices(['T', 'F'], weights=(60, 40),k=1)
+                if rB[0] == "T":
+                    self.OppBleed()
+        return attPow
+
     def StrikeEvaded(self):
         global ev, data, animal
         dodge = round(ev / 10) + round(data.loc[4, animal] / 10)
@@ -184,7 +232,23 @@ class Lion:
         self.oppBleed = oppBleed
         return oppBleed
     def JungleStatAdj(self):
+        self.ev = self.ev - 10
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def ArcticStatAdj(self):
         self.ev = self.ev - 15
+        self.speed -= 5
+        self.isCamouflaged = False
+        if self.isCamouflaged:
+            self.attPT += 1
+
+    def DesertStatAdj(self):
+        self.ev = self.ev - 15
+        self.attPT = round((((data.loc[4, animal] / 5 + data.loc[2, animal] / 4) * (data.loc[7, animal] - 1)) - (
+            math.sqrt(data.loc[9, animal]))) / 30)
+        self.speed -= 5
         self.isCamouflaged = False
         if self.isCamouflaged:
             self.attPT += 1
