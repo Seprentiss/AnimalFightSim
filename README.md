@@ -4,6 +4,8 @@ The Animal Fight Simulator came about after having a discussion with my father a
 <br> I used to have these debates all the time as a kid with my friends and now that I know a bit about programming I set out to answer the question
 of which animals really would win in a fight.
 
+![alt text] (https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bustle.com%2Farticles%2F77057-angry-gorilla-charges-at-a-family-at-omaha-zoo-splintering-glass-so-feel-free-to-have&psig=AOvVaw1U8OFITWnLZ3SVFjHREgUk&ust=1600448891166000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOjcj_HW8OsCFQAAAAAdAAAAABA2)
+
 ## How are winners decided
 
 The method by which the winner is decided is by using a Monte Carlo simulation to run 10,000 fights and calulacte the percentage of total victories for each comabtant.
