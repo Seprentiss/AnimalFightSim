@@ -31,7 +31,7 @@ twoBleeding = False
 one = ""
 two = ""
 
-num_of_tests = 10000
+num_of_tests = 100000
 
 combatants = []
 
