@@ -16,10 +16,9 @@ from ANIMALS.MEDIUM.Cougar import Cougar
 from ANIMALS.MEDIUM.Jaguar import Jaguar
 from ANIMALS.MEDIUM.Wolf import Wolf
 
-from tqdm import trange
 import time
 
-global animals, attacks, biteRow, hitRow, currentAnimal, end, currentAnimal, oneCount, twoCount, attacksPerTurn, one, two, num_of_tests
+global animals, attacks, biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, one, two, num_of_tests
 
 
 end = False;
@@ -36,7 +35,7 @@ twoBleeding = False
 one = ""
 two = ""
 
-num_of_tests = 10000
+num_of_tests = 1000
 
 combatants = []
 
@@ -93,22 +92,36 @@ def Next(current):
     if current == 2:
         currentAnimal = 1
 
+def RandAnimal(anOne, anTwo):
+    aggression_One = anOne.aggression
+    aggression_Two = anTwo.aggression
 
+    mean_Aggression = aggression_One + aggression_Two
+
+    aggression_One_Rat = int((aggression_One / mean_Aggression) * 100)
+    aggression_Two_Rat = int((aggression_Two / mean_Aggression) * 100)
+
+    if aggression_One_Rat > aggression_Two_Rat:
+        num = random.randrange(1, 101)
+        if num <= aggression_One_Rat:
+            return 1
+        if num > 100 - aggression_Two_Rat:
+            return 2
+    else:
+        num = random.randrange(1, 101)
+        if num <= aggression_Two_Rat:
+            return 2
+        if num > 100 - (100 - aggression_One_Rat):
+            return 1
 
 # Handles all Simulations in the Plains Biome
 def PlainsSim(animalOne, animalTwo):
-    global biteRow, hitRow, currentAnimal, end, oneCount, twoCount, attacksPerTurn, num_of_tests
+    global biteRow, hitRow, end, oneCount, twoCount, attacksPerTurn, num_of_tests, currentAnimal
+
     oneCount= 0
     twoCount = 0
-    print("Simulating Match-up...\n")
-    time.sleep(.5)
-    for n in trange(num_of_tests):
-        if n == num_of_tests * .25:
-            print("\nLoading Stats... ")
-        if n == num_of_tests / 2:
-            print("\nPreparing Battle Field")
-        if n == num_of_tests * .75:
-            print("\nCalculating Results...")
+    for n in range(num_of_tests):
+
         end = False
         one = AnimalOneSelection(animalOne)
         two = AnimalTwoSelection(animalTwo)
@@ -116,7 +129,7 @@ def PlainsSim(animalOne, animalTwo):
         oneHealth = one.health
         twoHealth = two.health
 
-        currentAnimal = random.randrange(1, 3)
+        currentAnimal = RandAnimal(one, two)
 
         while ((one.health > 0 or two.health > 0) and end is False):
 
