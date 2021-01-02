@@ -24,7 +24,7 @@ def List():
 
 terrain = ["Plains", "Jungle", "Arctic", "Desert", "All"]
 
-def ComboBoxImageLeft(event):
+def ComboBoxImageLeft():
     if Animal_One_Selection.get() == "Gorilla":
         Imglft = ImageTk.PhotoImage(file="Images/Gorilla.jpeg")
         label_left.configure(image=Imglft)
@@ -90,7 +90,7 @@ def ComboBoxImageLeft(event):
         label_left.configure(image=Imglft)
         label_left.image = Imglft
 
-def ComboBoxImageRight(event):
+def ComboBoxImageRight():
     if Animal_Two_Selection.get() == "Gorilla":
         ImgRgt = ImageTk.PhotoImage(file="Images/Gorilla.jpeg")
         label_right.configure(image=ImgRgt)
@@ -158,7 +158,6 @@ def ComboBoxImageRight(event):
 
 def Start(anOne, anTwo, Terrain):
     global output, num_of_tests, terrain
-    num_of_tests = 1000
     if Terrain.get() == "Plains":
         output = PLAINS.PlainsSim(str(anOne.get()).title(), str(anTwo.get()).title())
     if Terrain.get() == "Jungle":
@@ -182,19 +181,26 @@ def Start(anOne, anTwo, Terrain):
         on_click("The " + str(anTwo.get()) + " Wins:" + "\nThey Won " + str(
             round(winP, 2)) + "% of the Match-ups")
 
-def updt_An_1_Animals(event):
+def updt_An_1_Animals():
     a = List()
     word = str(Animal_One_Selection.get())
     indx = a.index(word)
     a.pop(indx)
     Animal_Two_Selection["values"] = a
 
-def updt_An_2_Animals(event):
+def updt_An_2_Animals():
     b = List()
     word = str(Animal_Two_Selection.get())
     indx = b.index(word)
     b.pop(indx)
     Animal_One_Selection["values"] = b
+
+def Handler1(event):
+    updt_An_1_Animals()
+    ComboBoxImageLeft()
+def Handler2(event):
+    updt_An_2_Animals()
+    ComboBoxImageRight()
 
 app = tk.Tk()
 
@@ -220,8 +226,7 @@ Animal_One_Start_Animals = List()
 Animal_One_Start_Animals.remove("Grizzly Bear")
 
 Animal_One_Selection = ttk.Combobox(app,values=Animal_One_Start_Animals)
-Animal_One_Selection.bind("<<ComboboxSelected>>", ComboBoxImageLeft)
-Animal_One_Selection.bind("<<ComboboxSelected>>", updt_An_1_Animals)
+Animal_One_Selection.bind("<<ComboboxSelected>>", Handler1)
 Animal_One_Selection.pack()
 Animal_One_Selection.current(0)
 
@@ -229,8 +234,7 @@ Animal_Two_Start_Animals = List()
 Animal_Two_Start_Animals.remove("Gorilla")
 
 Animal_Two_Selection = ttk.Combobox(app,values=Animal_Two_Start_Animals)
-Animal_Two_Selection.bind("<<ComboboxSelected>>", ComboBoxImageRight)
-Animal_Two_Selection.bind("<<ComboboxSelected>>", updt_An_2_Animals)
+Animal_Two_Selection.bind("<<ComboboxSelected>>", Handler2)
 Animal_Two_Selection.pack()
 Animal_Two_Selection.current(0)
 
