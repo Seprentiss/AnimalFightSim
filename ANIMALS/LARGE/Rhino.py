@@ -36,6 +36,7 @@ class Rhino:
         self.inTree = inTree
         self.oppInTree = oppInTree
         self.isCamouflaged = isCamouflaged
+        self.aggression = data.loc[16, animal]
 
     def ClimbTree(self):
         global inTree, attPt

@@ -4,7 +4,7 @@ import pandas as pd
 import random
 class Giraffe:
     global data, animal, health, speed, tusk, stomp, attacks, neck, ev, attPT, teethBonus, oppBleed, charge,kick,inTree,oppInTree, attPow,isCamouflaged, size, intel
-    data = pd.read_csv("/Users/spencerprentiss/PycharmProjects/AnimalFightSimulator/animalfight(2).csv")
+    data = pd.read_csv("/Users/spencerprentiss/PycharmProjects/AnimalFightSimulator/animalfight(3).csv")
     animal = "GIRAFFE"
     attacks = ["neck", "Charge", "Kick"]
     speed = data.loc[2, animal]
@@ -37,6 +37,7 @@ class Giraffe:
         self.inTree = inTree
         self.oppInTree = oppInTree
         self.isCamouflaged = isCamouflaged
+        self.aggression = data.loc[16, animal]
 
     def ClimbTree(self):
         global inTree, attPt

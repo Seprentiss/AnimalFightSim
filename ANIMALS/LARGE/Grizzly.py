@@ -26,7 +26,7 @@ class Grizzly:
     isCamouflaged = False
 
     def __init__(self):
-        global health, speed, bite, punch, slam, attacks, attPT, oppBleed, inTree, opInTree,isCamouflaged
+        global health, speed, bite, punch, slam, attacks, attPT, oppBleed, inTree, opInTree,isCamouflaged, aggression
         self.health = health
         self.speed = speed
         self.size = size
@@ -41,6 +41,7 @@ class Grizzly:
         self.inTree = inTree
         self.oppInTree = oppInTree
         self.isCamouflaged = isCamouflaged
+        self.aggression = grizz_data.loc[16, animal]
 
     def ClimbTree(self):
         global inTree, attPt
