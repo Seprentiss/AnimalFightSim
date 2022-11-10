@@ -70,3 +70,6 @@ Throughout testing some of the stats had to be adjusted slightly for balancing p
 ## Overall experience/ What I learned
 This project taught me a lot. I was able to sharpen my coding skills as well as fully complete a project from start to end without a prior template being provided.
 I learned how to create metrics and how to balance them to achieve results and learned how to create a Montecarlo Simulation. I thouroughly enjoyed this project and had a blast working on it. I'll be continuing to update it with further features like more animals and terrains.
+
+
+For those interesting in trying the program out. There are two different options. Running the Text_App.py file will give you a command line style game. If you run GUI_App.py then you'll will opn another window and will get the interactive version.
